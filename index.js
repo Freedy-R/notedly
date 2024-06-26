@@ -7,6 +7,7 @@ import cors from "cors";
 import schemes from "./src/schemes/schemes.js";
 import resolvers from "./src/resolvers/resolvers.js";
 import * as db from "./src/database/db.js";
+import models from "./src/database/models/models.js";
 
 const app = e();
 const httpServer = http.createServer(app);
@@ -26,7 +27,9 @@ app.use(
   PATH_TO_API,
   cors(),
   e.json(),
-  expressMiddleware(server, { context: async ({ req }) => ({ token: req.headers.token }) })
+  expressMiddleware(server, {
+    context: async ({ req }) => ({ models: models, token: req.headers.token }),
+  })
 );
 
 await new Promise((resolve) => httpServer.listen(port, resolve));

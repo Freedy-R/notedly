@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import gql from "graphql-tag";
 
 const noteScheme = gql(
-  readFileSync("./src/schemes/noteScheme.graphql", {
+  readFileSync("./src/schemes/noteScheme.gql", {
     encoding: "utf-8",
   })
 );
