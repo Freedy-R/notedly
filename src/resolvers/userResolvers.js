@@ -37,7 +37,9 @@ const userResolvers = {
     },
     signIn: async (parent, args) => {
       try {
-        const user = await models.User.findOne({ email: args.email });
+        const user = await models.User.findOne({
+          $or: [{ email: args.email }, { username: args.username }],
+        });
         if (!user) {
           throw new Error("User with this email does not exist");
         }
