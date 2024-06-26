@@ -1,2 +1,4 @@
 import noteResolvers from "./noteResolvers.js";
-export default [noteResolvers];
+import userResolvers from "./userResolvers.js";
+
+export default [noteResolvers, userResolvers];

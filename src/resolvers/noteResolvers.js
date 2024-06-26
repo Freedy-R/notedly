@@ -6,7 +6,7 @@ const noteResolvers = {
       return await models.Note.find();
     },
     note: async (parent, args, { models }) => {
-      return notes.find((note) => note.id === args.id);
+      return await models.Note.findById(args.id);
     },
   },
 

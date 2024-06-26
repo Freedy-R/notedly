@@ -7,6 +7,10 @@ const noteScheme = gql(
     encoding: "utf-8",
   })
 );
-
-const schemes = mergeTypeDefs([noteScheme]);
+const userScheme = gql(
+  readFileSync("./src/schemes/userScheme.gql", {
+    encoding: "utf-8",
+  })
+);
+const schemes = mergeTypeDefs([noteScheme, userScheme]);
 export default schemes;

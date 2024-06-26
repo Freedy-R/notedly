@@ -1,0 +1,12 @@
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  avatar: String
+  notes: [Note!]!
+}
+
+type Mutation {
+  signUp(username: String!, email: String!, password: String!): String!
+  signIn(username: String, email: String, password: String!): String!
+}

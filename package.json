@@ -14,12 +14,15 @@
   "dependencies": {
     "@apollo/server": "^4.10.4",
     "@graphql-tools/merge": "^9.0.4",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
     "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
+    "gravatar": "^1.8.2",
     "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.3",
     "nodemon": "^3.1.4"
   }

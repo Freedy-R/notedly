@@ -1,11 +1,13 @@
 type Query {
   notes: [Note!]!
   note(id: ID!): Note!
+  users: [User!]!
+  user(id: ID!): User!
 }
 type Note {
   id: ID!
   content: String!
-  author: String!
+  author: User!
 }
 
 type Mutation {
