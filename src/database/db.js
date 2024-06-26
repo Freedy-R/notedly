@@ -1,0 +1,25 @@
+import mongoose from "mongoose";
+
+export const connect = (DB_HOST) => {
+  mongoose.connect(DB_HOST);
+  mongoose.connection.on("error", (err) => {
+    console.error(err);
+    process.exit(1);
+  });
+  mongoose.connection.on("connected", () => {
+    console.log("Mongoose is connected");
+  });
+  mongoose.connection.on("disconnected", () => {
+    console.log("Mongoose is disconnected");
+  });
+  process.on("SIGINT", () => {
+    mongoose.connection.close(() => {
+      console.log("Mongoose is disconnected through app termination");
+      process.exit(0);
+    });
+  });
+};
+
+export const disconnect = () => {
+  mongoose.connection.close();
+};
