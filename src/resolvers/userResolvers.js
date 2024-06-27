@@ -15,6 +15,14 @@ const userResolvers = {
       return await models.User.findById(user.id);
     },
   },
+  User: {
+    notes: async (user, args, { models }) => {
+      return await models.Note.find({ author: user._id }).sort({ _id: -1 });
+    },
+    favorites: async (user, args, { models }) => {
+      return await models.Note.find({ favoritedBy: user._id }).sort({ _id: -1 });
+    },
+  },
   Mutation: {
     signUp: async (parent, args) => {
       args.email = args.email.trim().toLowerCase();
