@@ -7,12 +7,24 @@ const noteSchema = new mongoose.Schema(
       required: true,
     },
     author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
+    // Dodaj właściwość favoriteCount.
+    favoriteCount: {
+      type: Number,
+      default: 0,
+    },
+    // Dodaj właściwość favoritedBy.
+    favoritedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
+    // Przypisanie właściwości createdAt i updatedAt typu Date.
     timestamps: true,
   }
 );

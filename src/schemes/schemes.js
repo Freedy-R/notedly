@@ -2,6 +2,11 @@ import { mergeTypeDefs } from "@graphql-tools/merge";
 import { readFileSync } from "fs";
 import gql from "graphql-tag";
 
+const schemes = gql(
+  readFileSync("./src/schemes/schemes.gql", {
+    encoding: "utf-8",
+  })
+);
 const noteScheme = gql(
   readFileSync("./src/schemes/noteScheme.gql", {
     encoding: "utf-8",
@@ -12,5 +17,6 @@ const userScheme = gql(
     encoding: "utf-8",
   })
 );
-const schemes = mergeTypeDefs([noteScheme, userScheme]);
-export default schemes;
+
+const typedefs = mergeTypeDefs([schemes, noteScheme, userScheme]);
+export default typedefs;

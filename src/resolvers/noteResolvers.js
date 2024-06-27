@@ -59,6 +59,51 @@ const noteResolvers = {
         return false;
       }
     },
+    toggleFavorite: async (parent, { id }, { user }) => {
+      // Jeżeli użytkownik nie zostanie znaleziony, należy zgłosić błąd uwierzytelniania.
+      if (!user) {
+        throw new AuthenticationError();
+      }
+      // Sprawdzenie, czy użytkownik oznaczył już daną notatkę jako ulubioną.
+      let noteCheck = await models.Note.findById(id);
+      const hasUser = noteCheck.favoritedBy.indexOf(user.id);
+      // Jeżeli nazwa użytkownika znajduje się na liście, należy ją
+      // z niej usunąć i zmniejszyć o 1 wartość właściwości favoriteCount.
+      if (hasUser >= 0) {
+        return await models.Note.findByIdAndUpdate(
+          id,
+          {
+            $pull: {
+              favoritedBy: mongoose.Types.ObjectId(user.id),
+            },
+            $inc: {
+              favoriteCount: -1,
+            },
+          },
+          {
+            // Właściwości new należy przypisać wartość true, aby zwrócić uaktualnioną notatkę.
+            new: true,
+          }
+        );
+      } else {
+        // Jeżeli nazwa użytkownika nie znajduje się na liście, należy ją
+        // dodać do listy i zwiększyć o 1 wartość właściwości favoriteCount.
+        return await models.Note.findByIdAndUpdate(
+          id,
+          {
+            $push: {
+              favoritedBy: mongoose.Types.ObjectId(user.id),
+            },
+            $inc: {
+              favoriteCount: 1,
+            },
+          },
+          {
+            new: true,
+          }
+        );
+      }
+    },
   },
 };
 export default noteResolvers;

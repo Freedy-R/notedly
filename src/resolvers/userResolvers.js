@@ -2,6 +2,7 @@ import models from "../database/models/models.js";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
+import mongoose from "mongoose";
 const userResolvers = {
   Query: {
     users: async (parent, args, { models }) => {
@@ -54,6 +55,44 @@ const userResolvers = {
       } catch (err) {
         console.error("Error signing in:", err);
         throw new Error("Failed to sign in");
+      }
+    },
+    toggleFavorite: async (parent, args, { models, user }) => {
+      if (!user) {
+        throw new Error("User with this email does not exist");
+      }
+      let noteCheck = await models.Note.findById(args.id);
+      const hasUser = noteCheck.favoritedBy.indexOf(user.id);
+      if (hasUser >= 0) {
+        return await models.Note.findByIdAndUpdate(
+          args.id,
+          {
+            $pull: {
+              favoritedBy: mongoose.Types.ObjectId.createFromHexString(user.id),
+            },
+            $inc: {
+              favoriteCount: -1,
+            },
+          },
+          {
+            new: true,
+          }
+        );
+      } else {
+        return await models.Note.findByIdAndUpdate(
+          args.id,
+          {
+            $push: {
+              favoritedBy: mongoose.Types.ObjectId.createFromHexString(user.id),
+            },
+            $inc: {
+              favoriteCount: 1,
+            },
+          },
+          {
+            new: true,
+          }
+        );
       }
     },
   },

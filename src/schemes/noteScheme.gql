@@ -1,14 +1,9 @@
-type Query {
-  notes: [Note!]!
-  note(id: ID!): Note!
-  users: [User!]!
-  user(username: String): User!
-  me: User!
-}
 type Note {
   id: ID!
   content: String!
   author: User!
+  favoriteCount: Int!
+  favoritedBy: [User!]
 }
 
 type Mutation {

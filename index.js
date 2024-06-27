@@ -4,7 +4,7 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { expressMiddleware } from "@apollo/server/express4";
 import http from "http";
 import cors from "cors";
-import schemes from "./src/schemes/schemes.js";
+import typeDefs from "./src/schemes/schemes.js";
 import resolvers from "./src/resolvers/resolvers.js";
 import jwt from "jsonwebtoken";
 import models from "./src/database/models/models.js";
@@ -19,7 +19,7 @@ const DB_HOST = process.env.DB_HOST;
 db.connect(DB_HOST);
 
 const server = new ApolloServer({
-  typeDefs: schemes,
+  typeDefs: typeDefs,
   resolvers: resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });

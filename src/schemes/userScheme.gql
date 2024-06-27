@@ -4,9 +4,11 @@ type User {
   email: String!
   avatar: String
   notes: [Note!]!
+  favorites: [Note!]!
 }
 
 type Mutation {
   signUp(username: String!, email: String!, password: String!): String!
   signIn(username: String, email: String, password: String!): String!
+  toggleFavorite(id: ID!): Note!
 }
