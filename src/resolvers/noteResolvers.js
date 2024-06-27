@@ -2,14 +2,6 @@ import mongoose from "mongoose";
 import models from "../database/models/models.js";
 
 const noteResolvers = {
-  Query: {
-    notes: async (parent, args, { models }) => {
-      return await models.Note.find();
-    },
-    note: async (parent, args, { models }) => {
-      return await models.Note.findById(args.id);
-    },
-  },
   Note: {
     author: async (note, args, { models }) => {
       return await models.User.findById(note.author);

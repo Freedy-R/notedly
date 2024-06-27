@@ -4,17 +4,6 @@ import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import mongoose from "mongoose";
 const userResolvers = {
-  Query: {
-    users: async (parent, args, { models }) => {
-      return await models.User.find({});
-    },
-    user: async (parent, args, { models }) => {
-      return await models.User.findOne({ username: args.username });
-    },
-    me: async (parent, args, { models, user }) => {
-      return await models.User.findById(user.id);
-    },
-  },
   User: {
     notes: async (user, args, { models }) => {
       return await models.Note.find({ author: user._id }).sort({ _id: -1 });
