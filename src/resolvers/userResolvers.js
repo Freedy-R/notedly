@@ -5,10 +5,13 @@ import gravatar from "gravatar";
 const userResolvers = {
   Query: {
     users: async (parent, args, { models }) => {
-      return await models.User.find();
+      return await models.User.find({});
     },
     user: async (parent, args, { models }) => {
-      return await models.User.findById(args.id);
+      return await models.User.findOne({ username: args.username });
+    },
+    me: async (parent, args, { models, user }) => {
+      return await models.User.findById(user.id);
     },
   },
   Mutation: {

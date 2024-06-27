@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import models from "../database/models/models.js";
 
 const noteResolvers = {
@@ -11,13 +12,23 @@ const noteResolvers = {
   },
 
   Mutation: {
-    newNote: async (parent, args, { models }) => {
+    newNote: async (parent, args, { models, user }) => {
+      if (!user) {
+        throw new Error("You must be logged in to create a note");
+      }
       return await models.Note.create({
         content: args.content,
-        author: "Adam Scott",
+        author: mongoose.Types.ObjectId.createFromHexString(user.id),
       });
     },
-    updateNote: async (parent, args, { models }) => {
+    updateNote: async (parent, args, { models, user }) => {
+      if (!user) {
+        throw new Error("You must be logged in to update a note");
+      }
+      const note = await models.Note.FindById(args.id);
+      if (note && String(note.author) !== user.id) {
+        throw new Error("You can only update your own notes");
+      }
       return await models.Note.findByIdAndUpdate(
         {
           _id: args.id,
@@ -32,7 +43,14 @@ const noteResolvers = {
         }
       );
     },
-    deleteNote: async (parent, args) => {
+    deleteNote: async (parent, args, { models, user }) => {
+      if (!user) {
+        throw new Error("You must be logged in to delete a note");
+      }
+      const note = await models.Note.FindById(args.id);
+      if (note && String(note.author) !== user.id) {
+        throw new Error("You can only delete your own notes");
+      }
       try {
         await models.Note.findByIdAndDelete({ _id: args.id });
         return true;
