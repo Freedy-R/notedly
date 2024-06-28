@@ -3,6 +3,7 @@ import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { expressMiddleware } from "@apollo/server/express4";
 import http from "http";
+import helmet from "helmet";
 import cors from "cors";
 import typeDefs from "./src/schemes/schemes.js";
 import resolvers from "./src/resolvers/resolvers.js";
@@ -21,6 +22,7 @@ db.connect(DB_HOST);
 const server = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
+  introspection: process.env.NODE_ENV !== "production",
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 await server.start();
@@ -37,6 +39,7 @@ const getUser = (token) => {
 };
 app.use(
   PATH_TO_API,
+  helmet(),
   cors(),
   e.json(),
   expressMiddleware(server, {

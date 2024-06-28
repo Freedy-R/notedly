@@ -59,15 +59,11 @@ const noteResolvers = {
       }
     },
     toggleFavorite: async (parent, { id }, { user }) => {
-      // Jeżeli użytkownik nie zostanie znaleziony, należy zgłosić błąd uwierzytelniania.
       if (!user) {
         throw new AuthenticationError();
       }
-      // Sprawdzenie, czy użytkownik oznaczył już daną notatkę jako ulubioną.
       let noteCheck = await models.Note.findById(id);
       const hasUser = noteCheck.favoritedBy.indexOf(user.id);
-      // Jeżeli nazwa użytkownika znajduje się na liście, należy ją
-      // z niej usunąć i zmniejszyć o 1 wartość właściwości favoriteCount.
       if (hasUser >= 0) {
         return await models.Note.findByIdAndUpdate(
           id,
@@ -80,13 +76,10 @@ const noteResolvers = {
             },
           },
           {
-            // Właściwości new należy przypisać wartość true, aby zwrócić uaktualnioną notatkę.
             new: true,
           }
         );
       } else {
-        // Jeżeli nazwa użytkownika nie znajduje się na liście, należy ją
-        // dodać do listy i zwiększyć o 1 wartość właściwości favoriteCount.
         return await models.Note.findByIdAndUpdate(
           id,
           {
