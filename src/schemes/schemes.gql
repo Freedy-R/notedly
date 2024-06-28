@@ -4,4 +4,5 @@ type Query {
   users: [User!]!
   user(username: String): User!
   me: User!
+  noteFeed(cursor: String): NoteFeed
 }

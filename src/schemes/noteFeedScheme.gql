@@ -1,0 +1,5 @@
+type NoteFeed {
+  notes: [Note]!
+  cursor: String!
+  hasNextPage: Boolean!
+}

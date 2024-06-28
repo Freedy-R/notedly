@@ -12,11 +12,16 @@ const noteScheme = gql(
     encoding: "utf-8",
   })
 );
+const noteFeedScheme = gql(
+  readFileSync("./src/schemes/noteFeedScheme.gql", {
+    encoding: "utf-8",
+  })
+);
 const userScheme = gql(
   readFileSync("./src/schemes/userScheme.gql", {
     encoding: "utf-8",
   })
 );
 
-const typedefs = mergeTypeDefs([schemes, noteScheme, userScheme]);
+const typedefs = mergeTypeDefs([schemes, noteScheme, noteFeedScheme, userScheme]);
 export default typedefs;
