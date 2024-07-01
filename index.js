@@ -2,15 +2,15 @@ import e from "express";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { expressMiddleware } from "@apollo/server/express4";
+import { createComplexityLimitRule } from "graphql-validation-complexity";
 import http from "http";
 import cors from "cors";
 import typeDefs from "./src/schemes/schemes.js";
 import resolvers from "./src/resolvers/resolvers.js";
-import jwt from "jsonwebtoken";
-import models from "./src/database/models/models.js";
 import * as db from "./src/database/db.js";
 import depthLimit from "graphql-depth-limit";
-import { createComplexityLimitRule } from "graphql-validation-complexity";
+
+import context from "./context.js";
 
 const app = e();
 const httpServer = http.createServer(app);
@@ -28,26 +28,12 @@ const server = new ApolloServer({
 });
 await server.start();
 
-const getUser = (token) => {
-  if (token) {
-    try {
-      return jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      console.error("Error verifying token:", err);
-      throw new Error("Failed to verify token");
-    }
-  }
-};
 app.use(
   PATH_TO_API,
   cors(),
   e.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => {
-      const token = req.headers.authorization;
-      const user = getUser(token);
-      return { models: models, user: user };
-    },
+    context: context,
   })
 );
 
