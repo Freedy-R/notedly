@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const DB_HOST = process.env.DB_HOST;
-export const connect = () => {
+export const connect = (DB_HOST) => {
   mongoose.connect(DB_HOST);
   mongoose.connection.on("error", (err) => {
     console.error(err);
